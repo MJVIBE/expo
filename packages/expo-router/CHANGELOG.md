@@ -12,6 +12,8 @@
 
 ### 🐛 Bug fixes
 
+- Wrap native tabs navigator with NavigationContent ([#40229](https://github.com/expo/expo/pull/40229) by [@Ubax](https://github.com/Ubax))
+
 ### 💡 Others
 
 ## 6.0.9 - 2025-10-01
