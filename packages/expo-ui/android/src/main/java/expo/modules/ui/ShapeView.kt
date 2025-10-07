@@ -138,7 +138,7 @@ data class ShapeRecord(
   val type: ShapeType = ShapeType.CIRCLE
 ) : Record
 
-fun Path.Companion.fromShapeRecord(record: ShapeRecord, size: Size): Path {
+fun pathFromShapeRecord(record: ShapeRecord, size: Size): Path {
   val cornerRounding = record.cornerRounding
   val smoothing = record.smoothing
   val innerRadius = record.innerRadius
@@ -164,7 +164,7 @@ fun shapeFromShapeRecord(shapeRecord: ShapeRecord?): Shape? {
   if (shapeRecord == null) return null
   return object : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
-      val path = Path.fromShapeRecord(shapeRecord, size)
+      val path = pathFromShapeRecord(shapeRecord, size)
       return Outline.Generic(path)
     }
   }
@@ -186,7 +186,7 @@ class ShapeView(context: Context, appContext: AppContext) : ExpoComposeView<Shap
       modifier = Modifier
         .fromExpoModifiers(props.modifiers.value)
         .drawWithCache {
-          val path = Path.fromShapeRecord(
+          val path = pathFromShapeRecord(
             ShapeRecord(
               cornerRounding = cornerRounding,
               smoothing = smoothing,

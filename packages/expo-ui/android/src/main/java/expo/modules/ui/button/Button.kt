@@ -65,13 +65,21 @@ data class ButtonProps(
   val elementColors: MutableState<ButtonColors> = mutableStateOf(ButtonColors()),
   val leadingIcon: MutableState<String?> = mutableStateOf(null),
   val trailingIcon: MutableState<String?> = mutableStateOf(null),
-  val disabled: MutableState<Boolean> = mutableStateOf(false),
+  val disabled: MutableState<Boolean?> = mutableStateOf(false),
   val modifiers: MutableState<List<ExpoModifier>?> = mutableStateOf(emptyList()),
   val shape: MutableState<ShapeRecord?> = mutableStateOf(null)
 ) : ComposeProps
 
 @Composable
-fun StyledButton(variant: ButtonVariant, colors: ButtonColors, disabled: Boolean, onPress: () -> Unit, modifier: Modifier = Modifier, shape: Shape?, content: @Composable (RowScope.() -> Unit)) {
+fun StyledButton(
+  variant: ButtonVariant,
+  colors: ButtonColors,
+  disabled: Boolean,
+  onPress: () -> Unit,
+  modifier: Modifier = Modifier,
+  shape: Shape?,
+  content: @Composable (RowScope.() -> Unit)
+) {
   when (variant) {
     ButtonVariant.BORDERED -> FilledTonalButton(
       onPress,
@@ -163,13 +171,14 @@ class Button(context: Context, appContext: AppContext) :
     val (leadingIcon) = props.leadingIcon
     val (trailingIcon) = props.trailingIcon
     val (disabled) = props.disabled
+
     DynamicTheme {
       StyledButton(
         variant ?: ButtonVariant.DEFAULT,
         colors,
-        disabled,
+        disabled ?: false,
         onPress = { onButtonPressed.invoke(ButtonPressedEvent()) },
-        modifier = Modifier.fromExpoModifiers(props.modifiers.value),
+        modifier = modifier.then(Modifier.fromExpoModifiers(props.modifiers.value)),
         shape = shapeFromShapeRecord(props.shape.value)
       ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
